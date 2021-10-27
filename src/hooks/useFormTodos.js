@@ -8,8 +8,9 @@ export const useFormTodos = () => {
   const [form, setForm] = useState({
     id: "",
     todo: "",
-    category: "",
+    category: "salud",
     done: false,
+    date: "",
   });
 
   const onChangeTodo = (e) => {
@@ -31,15 +32,18 @@ export const useFormTodos = () => {
 
     const id = nanoid(10);
 
-    setTodos([...todos, { ...form, id }]);
+    setTodos([...todos, { ...form, id, date: new Date() }]);
 
     setForm({
       id: "",
       todo: "",
-      category: "",
+      category: "salud",
       done: false,
+      date: "",
     });
   };
 
-  return [onChangeTodo, onChangeCategory, saveTodo];
+  const { todo, category } = form;
+
+  return [onChangeTodo, onChangeCategory, saveTodo, todo, category];
 };

@@ -2,22 +2,19 @@ import styled from "styled-components";
 import { FiEdit } from "react-icons/fi";
 import { BsTrash, BsCheckLg } from "react-icons/bs";
 import { useState } from "react";
+import { useTodo } from "../hooks/useTodo";
+import { formatDate } from "../utils/formatDate";
 
 const Todo = ({ todo }) => {
-  const [checked, setChecked] = useState(false);
-
-  const handlerCheckbox = (e) => {
-    console.log(e.target.checked);
-    setChecked(e.target.checked);
-  };
-
-  const { id, todo: valueTodo, category, done } = todo;
+  const [deleteTodo, toggleTodo, editTodo] = useTodo();
+  const { id, todo: valueTodo, category, done, date } = todo;
   return (
     <StyledTodo>
       <TodoContent>
         <LabelCheckbox>
           <input
-            onChange={handlerCheckbox}
+            checked={done}
+            onChange={(e) => toggleTodo(e, id)}
             className="input"
             type="checkbox"
             hidden
@@ -26,15 +23,15 @@ const Todo = ({ todo }) => {
             <CheckboxIcon className="checkbox-icon" />
           </Checkbox>
         </LabelCheckbox>
-        <Text>{valueTodo}</Text>
+        <Text done={done}>{valueTodo}</Text>
         <Badge>{category}</Badge>
-        <Time>24 de octubre 10:24</Time>
+        <Time>{formatDate(date)}</Time>
       </TodoContent>
       <TodoActions>
-        <Edit>
+        <Edit onClick={() => editTodo(id)}>
           <FiEdit />
         </Edit>
-        <Delete>
+        <Delete onClick={() => deleteTodo(id)}>
           <BsTrash />
         </Delete>
       </TodoActions>
@@ -77,7 +74,7 @@ const Checkbox = styled.span`
   font-size: 0.8rem;
 `;
 
-const Button = styled.button`
+const ButtonTodo = styled.button`
   background: none;
   border: none;
   font-size: 1rem;
@@ -97,11 +94,11 @@ const Button = styled.button`
   }
 `;
 
-const Delete = styled(Button)`
+const Delete = styled(ButtonTodo)`
   color: ${({ theme }) => theme.red};
 `;
 
-const Edit = styled(Button)`
+const Edit = styled(ButtonTodo)`
   color: ${({ theme }) => theme.green};
 `;
 
@@ -140,7 +137,8 @@ const StyledTodo = styled.div`
 `;
 
 const Text = styled.p`
-  /* text-decoration: line-through; */
+  text-decoration: ${({ done }) => (done ? "line-through" : null)};
+  font-style: ${({ done }) => (done ? " italic" : null)};
 `;
 
 export default Todo;

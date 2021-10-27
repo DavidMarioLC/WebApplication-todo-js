@@ -4,16 +4,22 @@ import { useContext } from "react";
 import { TodoContext } from "../context/todoContext";
 
 const ListTodos = () => {
-  const [todos, setTodos] = useContext(TodoContext);
+  const [todos] = useContext(TodoContext);
 
   return (
     <StyledListTodos>
-      <h2>Total todos (4)</h2>
-      <StyledContentList>
-        {todos.map((todo, key) => (
-          <Todo key={key} todo={todo} />
-        ))}
-      </StyledContentList>
+      {todos.length > 0 ? (
+        <>
+          <h2>Total todos ({todos.length})</h2>
+          <StyledContentList>
+            {todos.map((todo, key) => (
+              <Todo key={key} todo={todo} />
+            ))}
+          </StyledContentList>
+        </>
+      ) : (
+        <p>no hay todos pendientes.</p>
+      )}
     </StyledListTodos>
   );
 };
