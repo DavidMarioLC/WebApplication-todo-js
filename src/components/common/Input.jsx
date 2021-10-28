@@ -14,7 +14,7 @@ export const Input = ({ value, eventChange }) => {
 const StyledInput = styled.input`
   flex: 3;
   border-radius: 0.5rem;
-  background: transparent;
+  background: ${({ theme }) => theme.darkBlue};
   padding: 1rem;
   font-size: 1rem;
   border: 2px solid ${({ theme }) => theme.lightPurple};

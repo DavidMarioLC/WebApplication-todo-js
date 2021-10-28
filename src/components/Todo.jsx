@@ -1,12 +1,15 @@
 import styled from "styled-components";
+import { useState, useContext } from "react";
 import { FiEdit } from "react-icons/fi";
 import { BsTrash, BsCheckLg } from "react-icons/bs";
-import { useState } from "react";
 import { useTodo } from "../hooks/useTodo";
 import { formatDate } from "../utils/formatDate";
+import { ModalContext } from "../context/ModalContext";
+import Modal from "./Modal";
 
 const Todo = ({ todo }) => {
-  const [deleteTodo, toggleTodo, editTodo] = useTodo();
+  const { modal } = useContext(ModalContext);
+  const { deleteTodo, toggleTodo, editTodo } = useTodo();
   const { id, todo: valueTodo, category, done, date } = todo;
   return (
     <StyledTodo>
@@ -28,13 +31,18 @@ const Todo = ({ todo }) => {
         <Time>{formatDate(date)}</Time>
       </TodoContent>
       <TodoActions>
-        <Edit onClick={() => editTodo(id)}>
+        <Edit
+          onClick={() => {
+            editTodo(id);
+          }}
+        >
           <FiEdit />
         </Edit>
         <Delete onClick={() => deleteTodo(id)}>
           <BsTrash />
         </Delete>
       </TodoActions>
+      {modal ? <Modal /> : null}
     </StyledTodo>
   );
 };
@@ -119,6 +127,9 @@ const TodoContent = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+  @media screen and (max-width: 768px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const TodoActions = styled.div`
@@ -134,6 +145,10 @@ const StyledTodo = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const Text = styled.p`

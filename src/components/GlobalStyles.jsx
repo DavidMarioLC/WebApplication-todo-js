@@ -8,7 +8,9 @@ const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.white};
     transition: all 0.50s linear;
   }
-
+  p{
+    margin:0;
+  }
 `;
 
 export default GlobalStyles;

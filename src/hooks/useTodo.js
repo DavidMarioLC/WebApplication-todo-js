@@ -1,8 +1,10 @@
 import { useContext } from "react";
+import { ModalContext } from "../context/ModalContext";
 import { TodoContext } from "../context/todoContext";
 
 export const useTodo = () => {
   const [todos, setTodos] = useContext(TodoContext);
+  const { openModal, saveTodoInModal, closeModal } = useContext(ModalContext);
 
   const deleteTodo = (id) => {
     const newListTodos = todos.filter((todo) => todo.id !== id);
@@ -21,8 +23,26 @@ export const useTodo = () => {
 
   const editTodo = (id) => {
     const todoSelected = todos.find((todo) => todo.id === id);
-    console.log(todoSelected);
+    saveTodoInModal(todoSelected);
+    openModal();
   };
 
-  return [deleteTodo, toggleTodo, editTodo];
+  const updateTodo = (e, id, newTodo) => {
+    e.preventDefault();
+
+    if (newTodo.todo === "") return alert("add todo");
+
+    const newListTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        console.log(todo);
+        return { ...todo, todo: newTodo.todo, category: newTodo.category };
+      }
+      return todo;
+    });
+
+    setTodos(newListTodos);
+    closeModal();
+  };
+
+  return { deleteTodo, toggleTodo, editTodo, updateTodo };
 };

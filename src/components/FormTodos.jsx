@@ -10,6 +10,7 @@ const FormTodos = () => {
     <StyledForm onSubmit={saveTodo}>
       <Input value={todo} eventChange={onChangeTodo} />
       <Select
+        size={1}
         value={category}
         eventOnChange={onChangeCategory}
         items={[
@@ -29,6 +30,10 @@ const StyledForm = styled.form`
   border-radius: 0.5rem;
   background: ${({ theme }) => theme.darkBlue};
   gap: 1rem;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export default FormTodos;

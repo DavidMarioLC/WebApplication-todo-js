@@ -1,13 +1,50 @@
-import { useState, useRef, createContext } from "react";
+import { useState, createContext } from "react";
 
 export const ModalContext = createContext();
 
 const ModalProvider = ({ children }) => {
-  const [todo, setTodo] = useState({});
-  const modalRef = useRef(null);
+  const [modal, setModal] = useState(false);
+  const [todoSelect, setTodoSelect] = useState({});
+
+  const openModal = () => {
+    setModal(!modal);
+  };
+
+  const closeModal = () => {
+    setModal(!modal);
+    setTodoSelect({});
+  };
+
+  const saveTodoInModal = (todo) => {
+    setTodoSelect(todo);
+  };
+
+  const onChangeTodo = (e) => {
+    setTodoSelect({
+      ...todoSelect,
+      todo: e.target.value,
+    });
+  };
+
+  const onChangeCategory = (e) => {
+    setTodoSelect({
+      ...todoSelect,
+      category: e.target.value,
+    });
+  };
 
   return (
-    <ModalContext.Provider value={[todo, setTodo, modalRef]}>
+    <ModalContext.Provider
+      value={{
+        modal,
+        openModal,
+        closeModal,
+        saveTodoInModal,
+        todoSelect,
+        onChangeTodo,
+        onChangeCategory,
+      }}
+    >
       {children}
     </ModalContext.Provider>
   );

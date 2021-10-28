@@ -30,6 +30,10 @@ export const useFormTodos = () => {
   const saveTodo = (e) => {
     e.preventDefault();
 
+    if (form.todo === "") {
+      return alert("llene todo los campos.");
+    }
+
     const id = nanoid(10);
 
     setTodos([...todos, { ...form, id, date: new Date() }]);
