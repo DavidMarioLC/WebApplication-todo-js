@@ -19,9 +19,9 @@ const Modal = () => {
           value={todoSelect.category}
           eventOnChange={onChangeCategory}
           items={[
-            { id: "1", value: "salud" },
-            { id: "2", value: "house" },
-            { id: "3", value: "work" },
+            { id: "1", value: "salud", label: "salud" },
+            { id: "2", value: "house", label: "house" },
+            { id: "3", value: "work", label: "work" },
           ]}
         />
         <Button>Update</Button>

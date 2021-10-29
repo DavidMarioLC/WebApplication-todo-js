@@ -1,12 +1,19 @@
 import styled from "styled-components";
 import Todo from "./Todo";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TodoContext } from "../context/todoContext";
 import empty from "../assets/images/empty.svg";
 import { Select } from "./common/Select";
 
 const ListTodos = () => {
-  const [todos] = useContext(TodoContext);
+  const [todos, setTodos, filterByCategory] = useContext(TodoContext);
+  let newTodos = [];
+
+  const [filters, setFilters] = useState({
+    category: "all",
+    date: "all",
+    all: "all",
+  });
 
   return (
     <StyledListTodos>
@@ -15,27 +22,30 @@ const ListTodos = () => {
           <h2>Total todos ({todos.length})</h2>
           <Filters>
             <Select
+              value={filters.category}
+              eventOnChange={filterByCategory}
               size={0.5}
               items={[
-                { id: "1", value: "salud" },
-                { id: "2", value: "house" },
-                { id: "3", value: "work" },
+                { id: "0", value: "all", label: "-- category --" },
+                { id: "1", value: "salud", label: "salud" },
+                { id: "2", value: "house", label: "house" },
+                { id: "3", value: "work", label: "work" },
               ]}
             />
             <Select
               size={0.5}
               items={[
-                { id: "1", value: "salud" },
-                { id: "2", value: "house" },
-                { id: "3", value: "work" },
+                { id: "0", value: "all", label: "-- Date --" },
+                { id: "1", value: "Last added", label: "Last added" },
+                { id: "2", value: "First added", label: "First added" },
               ]}
             />
             <Select
               size={0.5}
               items={[
-                { id: "1", value: "salud" },
-                { id: "2", value: "house" },
-                { id: "3", value: "work" },
+                { id: "0", value: "all", label: "-- All --" },
+                { id: "1", value: "completed", label: "completed" },
+                { id: "2", value: "incomplete", label: "incomplete" },
               ]}
             />
           </Filters>
@@ -87,6 +97,7 @@ const StyleEmpty = styled.img`
 
 const Filters = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 `;
 

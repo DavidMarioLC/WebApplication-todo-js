@@ -5,7 +5,7 @@ export const Select = ({ size, value, eventOnChange, items }) => {
     <StyledSelect size={size} value={value} onChange={eventOnChange}>
       {items.map((item) => (
         <option key={item.id} value={item.value}>
-          {item.value}
+          {item.label}
         </option>
       ))}
     </StyledSelect>
