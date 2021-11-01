@@ -6,14 +6,62 @@ import empty from "../assets/images/empty.svg";
 import { Select } from "./common/Select";
 
 const ListTodos = () => {
-  const [todos, setTodos, filterByCategory] = useContext(TodoContext);
-  let newTodos = [];
+  const [todos, setTodos] = useContext(TodoContext);
 
-  const [filters, setFilters] = useState({
-    category: "all",
-    date: "all",
-    all: "all",
-  });
+  const [copyTodos, setCopyTodos] = useState([]);
+
+  const filterByCategory = (e) => {
+    const category = e.target.value;
+
+    if (category === "all") {
+      setCopyTodos(todos);
+    } else {
+      const todosByCategory = todos.filter(
+        (todo) => todo.category === category
+      );
+      setCopyTodos(todosByCategory);
+    }
+  };
+
+  const filterByAsc = (e) => {
+    const date = e.target.value;
+
+    if (date === "all") {
+      const newTodos = [...todos].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      setCopyTodos(newTodos);
+    } else if (date === "desc") {
+      const newTodos = [...todos].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      setCopyTodos(newTodos);
+    } else if (date === "asc") {
+      const newTodos = [...todos].sort(
+        (a, b) => new Date(a.date) - new Date(b.date)
+      );
+
+      setCopyTodos(newTodos);
+    }
+  };
+
+  const filterByCompleted = (e) => {
+    const completed = e.target.value;
+
+    if (completed === "completed") {
+      const todosCompleted = todos.filter((todo) => todo.done === true);
+      return setCopyTodos(todosCompleted);
+    } else if (completed === "incomplete") {
+      const todosUncomplete = todos.filter((todo) => todo.done === false);
+      return setCopyTodos(todosUncomplete);
+    }
+
+    return setCopyTodos(todos);
+  };
+
+  useEffect(() => {
+    setCopyTodos(todos);
+  }, [todos]);
 
   return (
     <StyledListTodos>
@@ -22,7 +70,6 @@ const ListTodos = () => {
           <h2>Total todos ({todos.length})</h2>
           <Filters>
             <Select
-              value={filters.category}
               eventOnChange={filterByCategory}
               size={0.5}
               items={[
@@ -34,14 +81,16 @@ const ListTodos = () => {
             />
             <Select
               size={0.5}
+              eventOnChange={filterByAsc}
               items={[
                 { id: "0", value: "all", label: "-- Date --" },
-                { id: "1", value: "Last added", label: "Last added" },
-                { id: "2", value: "First added", label: "First added" },
+                { id: "1", value: "desc", label: "Last added" },
+                { id: "2", value: "asc", label: "First added" },
               ]}
             />
             <Select
               size={0.5}
+              eventOnChange={filterByCompleted}
               items={[
                 { id: "0", value: "all", label: "-- All --" },
                 { id: "1", value: "completed", label: "completed" },
@@ -51,7 +100,7 @@ const ListTodos = () => {
           </Filters>
 
           <StyledContentList>
-            {todos.map((todo, key) => (
+            {copyTodos.map((todo, key) => (
               <Todo key={key} todo={todo} />
             ))}
           </StyledContentList>
